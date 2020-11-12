@@ -19,6 +19,10 @@ public class Simple_Walk_anim_anonym{
     static final int FPS_INIT = 5;
 
     public static void main(String s[]) {
+        JRadioButton rb1,rb2, rb3;
+        rb1=new JRadioButton("RED");
+        rb2=new JRadioButton("BLUE");
+        rb3=new JRadioButton("GREEN");
         JFrame frame = new JFrame("błądzenie przypadkowe");
         JPanel panel = new JPanel();
         panel.setLayout(new FlowLayout());
@@ -28,26 +32,53 @@ public class Simple_Walk_anim_anonym{
         label.setBorder(border);
         JSlider suwak = new JSlider(JSlider.VERTICAL,
                 FPS_MIN, FPS_MAX, FPS_INIT);
-        
+
         JButton button = new JButton();
         button.setText("START");
         button.setEnabled(false);
+        ButtonGroup bg = new ButtonGroup();
+        bg.add(rb1);
+        bg.add(rb2);
+        bg.add(rb3);
+
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 wykres.rysowac=true;
                 wykres.repaint();
                 suwak.setEnabled(false);
+
             }
         });
         suwak.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
+                if (rb1.isSelected()) {
+                    wykres.kolor = Color.RED;
+                    wykres.repaint();
+                }
+                if (rb2.isSelected()) {
+                    wykres.kolor = Color.BLUE;
+                    wykres.repaint();
+                }
+                if (rb3.isSelected()) {
+                    wykres.kolor = Color.GREEN;
+                    wykres.repaint();
+                }
                 wykres.x = suwak.getValue();
                 wykres.y = suwak.getValue();
                 wykres.repaint();
                 button.setEnabled(true);
             }
         });
+        rb1.setBounds(100,150, 100,30);
+        rb2.setBounds(100,100, 100,30);
+        rb3.setBounds(100,50, 100,30);
+
+
+        panel.add(rb1);
+        panel.add(rb2);
+        panel.add(rb3);
+
         panel.add(suwak);
         panel.add(label);
         panel.add(button);
@@ -60,11 +91,13 @@ public class Simple_Walk_anim_anonym{
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
 
+
     }
 
 }
 
 class Wykresanimstart extends JPanel{
+    Color kolor = Color.CYAN;
     int wielkosc=300;
     int x=wielkosc/2;
     int y=wielkosc/2;
@@ -79,7 +112,9 @@ class Wykresanimstart extends JPanel{
 
     public void paintComponent(Graphics graf){
         super.paintComponent(graf);
+        graf.setColor(kolor);
         graf.fillOval(x, y, 6, 6);
+
         if (rysowac) {
             step++;
             double r=Math.random();
